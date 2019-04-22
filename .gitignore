@@ -5,3 +5,11 @@
 !.vscode/extensions.json
 *.o
 *.elf
+*.cf
+*.wpc
+*.lpr
+*.xpr
+VLSI1.cache/
+VLSI1.hw/
+VLSI1.ip_user_files/
+VLSI1.sim/
