@@ -32,13 +32,6 @@ begin
 	process (reset, CLK_100MHz)
 	begin
 		if (reset = '1') then
-
-			-- reset to n * '0'
-			for i in 0 to N_BITS-1 loop
-				r_dcc_frame(i) <= '0';
-			end loop;
-
-			-- reset valid bit;
 			r_dcc_frame_v <= '0';
 		elsif (rising_edge(CLK_100MHz)) then
 			if r_dcc_frame_v = '0' then
