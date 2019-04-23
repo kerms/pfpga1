@@ -21,7 +21,7 @@ ARCHITECTURE behavior OF TB_Clock_Divider IS
     signal reset   : std_logic := '0';
     -- Outputs
     signal clk_out : std_logic;
-    constant half_clock : time := 20 ns; 
+    constant period : time := 10 ns;  -- 100 MHz
 BEGIN 
     -- unit under test
     uut: Clock_Divider 
@@ -36,9 +36,9 @@ BEGIN
     clk_process :process
         begin
         clk_in <= '0';
-        wait for half_clock / 2;
+        wait for period / 2;
         clk_in <= '1';
-        wait for half_clock / 2;
+        wait for period / 2;
     end process;
 
     -- Processing
@@ -49,7 +49,7 @@ BEGIN
         wait for 100 ns;
 
 
-        reset <= '0'; -- Down to work!
+        reset <= '0';
         wait;
     end process;
 END;

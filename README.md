@@ -1,4 +1,4 @@
-# Projet de FPGA1 : Centrale DCC 
+# Projet de FPGA1 : Centrale DCC
 
 ```
 Sidiki SYLLA

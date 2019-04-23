@@ -22,7 +22,7 @@ architecture Behavioral of TB_Counter is
     signal reset   : std_logic := '0';
     -- Outputs
     signal FIN : std_logic;
-    constant half_clock : time := 20 ns; 
+    constant period : time := 20 ns; 
 
     signal cpt : integer range 0 to 20 := 0;
 begin
@@ -40,9 +40,9 @@ begin
     clo_process :process
         begin
         clk_in <= '0';
-        wait for half_clock / 2;
+        wait for period / 2;
         clk_in <= '1';
-        wait for half_clock / 2;
+        wait for period / 2;
     end process;
 
     -- Processing

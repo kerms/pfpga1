@@ -14,19 +14,37 @@ end Clock_Divider;
 
 
 architecture Behavioral of Clock_Divider is
+
+    COMPONENT Counter
+    generic (
+            N : integer := 100
+        );
+    port (
+        CLK_In      : in std_logic;
+        reset       : in std_logic;
+        FIN         : out std_logic
+    );
+    END COMPONENT;
+
     signal temporal: STD_LOGIC;
-    signal counter : integer range 0 to divisor/2-1 := 0;
+    signal fin : STD_LOGIC;
 begin
+
+    counter_inst : Counter 
+    GENERIC MAP (divisor/2)
+    PORT MAP (
+        clk_in  => clk_in,
+        reset   => reset,
+        FIN => FIN
+    );
+
+
     frequency_divider: process (reset, CLK_In) begin
         if (reset = '1') then
             temporal <= '0';
-            counter <= 0;
         elsif rising_edge(CLK_In) then
-            if (counter = divisor/2-1 ) then
+            if fin = '1' then
                 temporal <= NOT(temporal);
-                counter <= 0;
-            else
-                counter <= counter + 1;
             end if;
         end if;
     end process;
