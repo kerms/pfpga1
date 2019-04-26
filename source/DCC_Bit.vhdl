@@ -1,18 +1,21 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity DCC_Bit_0 is
+entity DCC_Bit is
+	generic (
+		PERIOD : integer := 58
+	);
 	port (
 		CLK_100MHz 	: in std_logic;
 		CLK_1MHz 	: in std_logic;
 		reset		: in std_logic;
-		Go_0 		: in std_logic;
-		DCC_0 		: out std_logic;
+		Go 		: in std_logic;
+		DCC 		: out std_logic;
 		FIN 		: out std_logic
 	);
-end DCC_Bit_0;
+end DCC_Bit;
 
-architecture DCC_Bit_0_arc of DCC_Bit_0 is
+architecture DCC_Bit_arc of DCC_Bit is
 
 COMPONENT Counter
 generic (
@@ -34,7 +37,7 @@ signal end_counter : std_logic;
 begin
 
 inst_counter : Counter 
-    GENERIC MAP (50)
+    GENERIC MAP (HALF_PERIOD/2-1)
     PORT MAP (
         clk_in  => CLK_1MHz,
         reset   => reset_counter,
@@ -52,16 +55,16 @@ begin
   end if;
 end process clocked;
 	
-FSM : PROCESS (state, Go_0, CLK_100MHz)
+FSM : PROCESS (state, Go, CLK_100MHz)
 BEGIN
 	if (rising_edge(CLK_100MHz)) then
 	case(state) is
 		when IDLE => 
-			if (Go_0 = '1') then
+			if (Go = '1') then
 				next_state <= LO;
 			end if;
-			reset_counter <= Go_0;
-			DCC_0 <= '0';
+			reset_counter <= Go;
+			DCC <= '0';
 			FIN <= '0';
 		when LO =>
 			if end_counter = '1' then
@@ -70,11 +73,11 @@ BEGIN
 			else 
 				reset_counter <= '0';
 			end if;
-			DCC_0 <= '0';
+			DCC <= '0';
 			FIN <= '0';
 		when HI =>
 			if end_counter = '1' then
-				if Go_0 = '0' then
+				if Go = '0' then
 					next_state <= IDLE;
 				else 
 					next_state <= LO;
@@ -84,9 +87,9 @@ BEGIN
 			else 
 				reset_counter <= '0';
 			end if;
-			DCC_0 <= '1';
+			DCC <= '1';
 	end case;
   	end if;
 END PROCESS FSM;
 
-end DCC_Bit_0_arc;
+end DCC_Bit_arc;
