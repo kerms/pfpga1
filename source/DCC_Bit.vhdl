@@ -17,14 +17,13 @@ end DCC_Bit;
 
 architecture DCC_Bit_arc of DCC_Bit is
 
-COMPONENT Counter
+COMPONENT Counter_Auto
 generic (
         N : integer
     );
 port (
     CLK_In      : in std_logic;
     reset       : in std_logic;
-    COM_COUNTER : in std_logic;
     FIN         : out std_logic
 );
 END COMPONENT;
@@ -35,15 +34,14 @@ signal next_state : STATE_TYPE;
 
 signal reset_counter : std_logic;
 signal end_counter : std_logic;
-signal COM_COUNTER : std_logic;
+signal state_reset : std_logic;
 begin
 
-inst_counter : Counter 
-    GENERIC MAP (PERIOD/2-1)
+inst_counter : Counter_Auto
+    GENERIC MAP (PERIOD)
     PORT MAP (
         clk_in  => CLK_1MHz,
         reset   => reset_counter,
-        COM_COUNTER => COM_COUNTER,
         FIN => end_counter
     );
 
@@ -62,24 +60,25 @@ out_put_dec : PROCESS (state)
 BEGIN
 	case(state) is
 		when FSM_IDLE => 
-			COM_COUNTER <= Go;
+			state_reset <= '1';
 			DCC <= '0';
 			FIN <= '0';
 
 		when FSM_LO =>
+			state_reset <= '0';
 			DCC <= '0';
 			FIN <= '0';
-			COM_COUNTER <= end_counter;
 
 		when FSM_HI =>
+			state_reset <= '0';
 			DCC <= '1';
 			FIN <= '0';
-			COM_COUNTER <= end_counter;
 
 		when FSM_FIN => 
+			state_reset <= '1';
 			FIN <= '1';
 			DCC <= '0';
-			COM_COUNTER <= '0';
+
 
 	end case;
 END PROCESS out_put_dec;
@@ -111,5 +110,7 @@ begin
 
 	end case;
 end process next_state_dec; 
+
+reset_counter <= state_reset or end_counter;
 
 end DCC_Bit_arc;

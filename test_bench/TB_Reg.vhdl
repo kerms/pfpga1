@@ -106,8 +106,6 @@ begin
 		wait for 100 ns;
 
 				COM_REG <= '1';
-		wait for period;
-		COM_REG <= '0';
 		wait for 100 ns;
 
 

@@ -173,6 +173,7 @@ begin
     stimuli : process
 	begin
 		reset <= '1';
+		FIN_TEMPO <= '0';
 		wait for 100 ns;
 
 		reset <= '0';

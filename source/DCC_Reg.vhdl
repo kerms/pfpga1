@@ -26,7 +26,7 @@ end DCC_Reg;
 architecture DCC_Reg_arc of DCC_Reg is
 
 signal r_dcc_frame : std_logic_vector(N_BITS-1 downto 0);
-signal r_dcc_frame_v : std_logic;
+signal r_dcc_frame_v : std_logic := '0';
 
 begin
 	process (reset, CLK_100MHz)
@@ -37,6 +37,7 @@ begin
 			if r_dcc_frame_v = '0' then
 				r_dcc_frame <= frame_in;
 				r_dcc_frame_v <= '1';
+
 			elsif COM_REG = '1' then
 				r_dcc_frame <= r_dcc_frame(N_BITS-2 downto 0) & '0';-- sll 1
 			end if;

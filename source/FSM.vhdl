@@ -28,7 +28,7 @@ end FSM;
 architecture FSM_arc of FSM is
 
 
-COMPONENT Counter
+COMPONENT Counter_Up
 generic (
         N : integer
     );
@@ -49,7 +49,7 @@ signal end_counter : std_logic;
 signal COM_COUNTER : std_logic;
 begin
 
-inst_counter : Counter
+inst_counter : Counter_Up
     GENERIC MAP (50)
     PORT MAP (
         clk_in  => CLK_100MHz,
@@ -73,6 +73,7 @@ BEGIN
 		when FSM_IDLE =>
 			inval_reg <= '0';
 			COM_TEMPO <= '0';
+			COM_REG <= '0';
 			GO_1 <= '0';
 			GO_0 <= '0';
 
@@ -97,9 +98,10 @@ BEGIN
 			inval_reg <= '0';
 
 	end case;
-END PROCESS FSM;
+END PROCESS out_put_dec;
 
-next_state_dec : process (state, FIN_0, FIN_1, end_counter) 
+next_state_dec : process (state, FIN_0, 
+	FIN_1, end_counter, carry_v, FIN_TEMPO) 
 begin 
       case (state) is 
 		when FSM_IDLE =>
