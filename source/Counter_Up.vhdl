@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity Counter is
+entity Counter_Up is
     generic (
             N : integer := 100
         );
@@ -11,10 +11,10 @@ entity Counter is
         COM_COUNTER : in std_logic;
         FIN         : out std_logic
     );
-end Counter;
+end Counter_Up;
 
 
-architecture Behavioral of Counter is
+architecture Behavioral of Counter_Up is
     TYPE STATE_TYPE IS (FSM_IDLE, FSM_COUNT, FSM_FIN);
     signal counter : integer range 0 to N-1 := 0;
     signal state, next_state : STATE_TYPE;
@@ -35,5 +35,5 @@ begin
         end if;
     end process;
 
-    FIN <= counter = N-1;
+    FIN <= '1' when counter = N-1 else '0';
 end Behavioral;
