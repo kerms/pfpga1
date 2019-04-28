@@ -2,14 +2,14 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 
-entity TB_DCC_Bit_0 is
-end TB_DCC_Bit_0;
+entity TB_DCC_Bit is
+end TB_DCC_Bit;
 
-architecture TB_DCC_Bit_0_arc of TB_DCC_Bit_0 is
+architecture TB_DCC_Bit_arc of TB_DCC_Bit is
 
 component DCC_Bit
     generic (
-		HALF_PERIOD : integer
+		PERIOD : integer
 	);
 	port (
 		CLK_100MHz 	: in std_logic;
@@ -94,6 +94,8 @@ begin
     stimuli : process
 	begin
 		reset <= '1';
+		Go_0 <= '0';
+		Go_1 <= '0';
 		wait for 100 ns;
 
 		reset <= '0';
@@ -104,4 +106,4 @@ begin
 	wait;
 	end process stimuli;
 
-end TB_DCC_Bit_0_arc;
+end TB_DCC_Bit_arc;

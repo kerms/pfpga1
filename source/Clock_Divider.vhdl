@@ -15,7 +15,7 @@ end Clock_Divider;
 
 architecture Behavioral of Clock_Divider is
 
-    COMPONENT Counter
+    COMPONENT Counter_Auto
     generic (
             N : integer := 100
         );
@@ -27,10 +27,10 @@ architecture Behavioral of Clock_Divider is
     END COMPONENT;
 
     signal temporal: STD_LOGIC;
-    signal fin : STD_LOGIC;
+    signal FIN : STD_LOGIC;
 begin
 
-    counter_inst : Counter 
+    counter_inst : Counter_Auto
     GENERIC MAP (divisor/2)
     PORT MAP (
         clk_in  => clk_in,
@@ -43,7 +43,7 @@ begin
         if (reset = '1') then
             temporal <= '0';
         elsif rising_edge(CLK_In) then
-            if fin = '1' then
+            if FIN = '1' then
                 temporal <= NOT(temporal);
             end if;
         end if;
