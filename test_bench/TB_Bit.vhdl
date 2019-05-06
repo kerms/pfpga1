@@ -52,7 +52,7 @@ constant period : time := 10 ns; -- 100 MHz
 begin
 
 	clk_inst: Clock_Divider 
-	GENERIC MAP (100)
+	GENERIC MAP (100) -- 100M -> 1M
 	PORT MAP (
 	    clk_in  => CLK_100MHz,
 	    reset   => reset,

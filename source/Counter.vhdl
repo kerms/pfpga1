@@ -51,6 +51,7 @@ begin
     end process;
 
     next_state_dec : process(state, counter, COM_COUNTER) begin
+        next_state <= state; -- default value, state not changing
         case(state) is
             when FSM_IDLE => 
                 if COM_COUNTER = '1' then

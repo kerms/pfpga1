@@ -28,7 +28,7 @@ port (
 );
 END COMPONENT;
 
-TYPE STATE_TYPE IS (FSM_IDLE, FSM_LO, FSM_HI, FSM_FIN);
+TYPE STATE_TYPE IS (FSM_IDLE, FSM_LO, FSM_LO_FIN, FSM_HI, FSM_FIN);
 signal state : STATE_TYPE;
 signal next_state : STATE_TYPE;
 
@@ -53,6 +53,8 @@ begin
     state <= FSM_IDLE;
   elsif (rising_edge(CLK_100MHz)) then
   	state <= next_state;
+  else
+    state <= state;
   end if;
 end process clocked;
 	
@@ -67,6 +69,11 @@ BEGIN
 		when FSM_LO =>
 			state_reset <= '0';
 			DCC <= '0';
+			FIN <= '0';
+
+		when FSM_LO_FIN =>
+			state_reset <= '1';
+			DCC <= '1';
 			FIN <= '0';
 
 		when FSM_HI =>
@@ -85,6 +92,7 @@ END PROCESS out_put_dec;
 
 next_state_dec : process (state, Go, end_counter) 
 begin 
+    next_state <= state; -- default value, state not changing
     case(state) is
 		when FSM_IDLE => 
 			if (Go = '1') then
@@ -93,8 +101,11 @@ begin
 
 		when FSM_LO =>
 			if end_counter = '1' then
-				next_state <= FSM_HI;
+				next_state <= FSM_LO_FIN;
 			end if;
+
+		when FSM_LO_FIN =>
+			next_state <= FSM_HI;
 			
 		when FSM_HI =>
 			if end_counter = '1' then
@@ -111,6 +122,6 @@ begin
 	end case;
 end process next_state_dec; 
 
-reset_counter <= state_reset or end_counter;
+reset_counter <= state_reset or reset;
 
 end DCC_Bit_arc;

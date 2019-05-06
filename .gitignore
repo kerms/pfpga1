@@ -9,7 +9,13 @@
 *.wpc
 *.lpr
 *.xpr
-VLSI1.cache/
-VLSI1.hw/
-VLSI1.ip_user_files/
-VLSI1.sim/
+*.vcd
+*.jou
+*.log
+*.str
+
+PFPGA1.cache/
+PFPGA1.hw/
+PFPGA1.ip_user_files/
+PFPGA1.sim/
+PFPGA1.runs/
