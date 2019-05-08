@@ -33,7 +33,7 @@ procedure vector_fill_0 (
 	DOUT : out std_logic_vector
 ) is
 begin
-	for i in DOUT'high-1 downto DOUT'low loop
+	for i in DOUT'high downto DOUT'low loop
       DOUT(i) := '0';
     end loop;
 end procedure vector_fill_0;
@@ -42,7 +42,7 @@ procedure vector_fill_1 (
 	DOUT : out std_logic_vector
 ) is
 begin
-	for i in DOUT'high-1 downto DOUT'low loop
+	for i in DOUT'high downto DOUT'low loop
       DOUT(i) := '1';
     end loop;
 end procedure vector_fill_1;

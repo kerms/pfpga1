@@ -15,7 +15,7 @@
 # * Add testbench filename without .vhd or vhdl to EXEC
 # * Then add denpency at USER DEFINE
 # EXEC can have multiple target
-EXEC 	 = tb
+EXEC 	 = tb TB_Counter_Auto
 
 CC   = ghdl
 FLAG = -a -v
@@ -47,7 +47,8 @@ all : $(EXEC)
 # your_test_bench_target : $(ALL_PKG) $(ALL_SRC)
 
 TB_Tempo : $(TB_DIR)/TB_Tempo.o
-tb : $(PKG_DIR)/random.o $(PKG_DIR)/check.o tb.o
+tb : $(PKG_DIR)/random.o $(PKG_DIR)/check.o $(PKG_DIR)/conversion.o
+TB_Counter_Auto : $(ALL_PKG) $(SRC_DIR)/Counter_Auto.o $(TB_DIR)/TB_Counter_Auto.o 
 
 # - - - - END DEFINE - - - - - - #
 # - - - - - - - - - - - - - - - -#
@@ -65,7 +66,6 @@ tb : $(PKG_DIR)/random.o $(PKG_DIR)/check.o tb.o
 	$(CC) $(FLAG) $<
 
 $(EXEC):
-	$(CC) $(FLAG) $@.vhdl
 	$(CC) -e -v $@
 
 $(VCD):%.vcd: %
