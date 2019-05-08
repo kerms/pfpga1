@@ -1,11 +1,11 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity TB_Counter is
-end TB_Counter;
+entity Simple_TB_Counter is
+end Simple_TB_Counter;
 
 
-architecture Behavioral of TB_Counter is
+architecture Behavioral of Simple_TB_Counter is
     COMPONENT Counter
     generic (
             N : integer := 100

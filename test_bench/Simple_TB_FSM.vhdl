@@ -2,10 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 
-entity TB_FSM is
-end TB_FSM;
+entity Simple_TB_FSM is
+end Simple_TB_FSM;
 
-architecture TB_TB_FSM_arc of TB_FSM is
+architecture Simple_TB_FSM_arc of Simple_TB_FSM is
 
 component DCC_Reg
 	generic (
@@ -187,4 +187,4 @@ begin
 	wait;
 	end process stimuli;
 
-end TB_TB_FSM_arc;
+end Simple_TB_FSM_arc;

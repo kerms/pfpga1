@@ -1,11 +1,13 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use work.random_pkg.all;
+use work.check_pkg.all;
+use work.conversion_pkg.all;
 
+entity TB_Bit is
+end TB_Bit;
 
-entity Simple_TB_Bit is
-end Simple_TB_Bit;
-
-architecture Simple_TB_Bit_arc of Simple_TB_Bit is
+architecture TB_Bit_arc of TB_Bit is
 
 component DCC_Bit
     generic (
@@ -52,7 +54,7 @@ constant period : time := 10 ns; -- 100 MHz
 begin
 
 	clk_inst: Clock_Divider 
-	GENERIC MAP (100)
+	GENERIC MAP (100) -- 100Mhz -> 1MHz
 	PORT MAP (
 	    clk_in  => CLK_100MHz,
 	    reset   => reset,
@@ -82,13 +84,7 @@ begin
 	);
 
     -- Clock definition
-    clk_process :process
-        begin
-        CLK_100MHz <= '0';
-        wait for period / 2;
-        CLK_100MHz <= '1';
-        wait for period / 2;
-    end process;
+ 	CLK_100MHz <= not CLK_100MHz after period / 2;
 
 	-- Processing
     stimuli : process
@@ -106,4 +102,4 @@ begin
 	wait;
 	end process stimuli;
 
-end Simple_TB_Bit_arc;
+end TB_Bit_arc;

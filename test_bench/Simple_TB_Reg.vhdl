@@ -2,10 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 
-entity TB_DCC_Reg is
-end TB_DCC_Reg;
+entity Simple_TB_DCC_Reg is
+end Simple_TB_DCC_Reg;
 
-architecture TB_DCC_Reg_arc of TB_DCC_Reg is
+architecture Simple_TB_DCC_Reg_arc of Simple_TB_DCC_Reg is
 
 component DCC_Reg
 	generic (
@@ -112,4 +112,4 @@ begin
 	wait;
 	end process stimuli;
 
-end TB_DCC_Reg_arc;
+end Simple_TB_DCC_Reg_arc;

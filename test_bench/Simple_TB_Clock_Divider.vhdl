@@ -1,10 +1,10 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 
-ENTITY TB_Clock_Divider IS
-END TB_Clock_Divider;
+ENTITY Simple_TB_Clock_Divider IS
+END Simple_TB_Clock_Divider;
 
-ARCHITECTURE behavior OF TB_Clock_Divider IS 
+ARCHITECTURE behavior OF Simple_TB_Clock_Divider IS 
     COMPONENT Clock_Divider
     generic (
             divisor : integer
