@@ -47,7 +47,7 @@ all : $(EXEC)
 # your_test_bench_target : $(ALL_PKG) $(ALL_SRC)
 
 TB_Tempo : $(TB_DIR)/TB_Tempo.o
-tb : $(PKG_DIR)/random.o tb.o $(PKG_DIR)/check.o
+tb : $(PKG_DIR)/random.o $(PKG_DIR)/check.o tb.o
 
 # - - - - END DEFINE - - - - - - #
 # - - - - - - - - - - - - - - - -#
@@ -80,4 +80,4 @@ clean :
 mrproper : clean
 	rm -f *.vcd $(EXEC) *.vbe *.cd
 
-.PHONY: %.o clean mrproper all $(ALL_OBJ) $(EXEC) display
+.PHONY: clean mrproper all $(EXEC) display
