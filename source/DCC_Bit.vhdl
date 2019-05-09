@@ -28,13 +28,14 @@ port (
 );
 END COMPONENT;
 
-TYPE STATE_TYPE IS (FSM_IDLE, FSM_LO, FSM_LO_FIN, FSM_HI, FSM_FIN);
+TYPE STATE_TYPE IS (FSM_IDLE, FSM_LO, FSM_HI, FSM_FIN);
 signal state : STATE_TYPE;
 signal next_state : STATE_TYPE;
 
 signal reset_counter : std_logic;
 signal end_counter : std_logic;
 signal state_reset : std_logic;
+signal old_end_counter : std_logic;
 begin
 
 inst_counter : Counter_Auto
@@ -51,8 +52,10 @@ clocked : process (reset, CLK_100MHz)
 begin
   if (reset = '1') then
     state <= FSM_IDLE;
+    old_end_counter <= '0';
   elsif (rising_edge(CLK_100MHz)) then
   	state <= next_state;
+  	old_end_counter <= end_counter;
   else
     state <= state;
   end if;
@@ -69,11 +72,6 @@ BEGIN
 		when FSM_LO =>
 			state_reset <= '0';
 			DCC <= '0';
-			FIN <= '0';
-
-		when FSM_LO_FIN =>
-			state_reset <= '1';
-			DCC <= '1';
 			FIN <= '0';
 
 		when FSM_HI =>
@@ -100,15 +98,12 @@ begin
 			end if;
 
 		when FSM_LO =>
-			if end_counter = '1' then
-				next_state <= FSM_LO_FIN;
+			if end_counter = '1' and old_end_counter = '0' then
+				next_state <= FSM_HI;
 			end if;
-
-		when FSM_LO_FIN =>
-			next_state <= FSM_HI;
 			
 		when FSM_HI =>
-			if end_counter = '1' then
+			if end_counter = '1' and old_end_counter = '0' then
 				next_state <= FSM_FIN;
 			end if;
 

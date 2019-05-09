@@ -20,6 +20,13 @@ procedure check_eq (
 	var_name : in String
 );
 
+procedure check_eq (
+	current_value : in integer;
+	expected_value : in integer;
+	var_name : in String;
+	stop : in std_logic
+);
+
 impure function check_eq (
 	current_value : std_logic;
 	expected_value : std_logic;
@@ -78,6 +85,18 @@ begin
 		severity ERROR;
 	nr_total := nr_total + 1;
 end procedure check_eq;
+
+procedure check_eq (
+	current_value : in integer;
+	expected_value : in integer;
+	var_name : in String;
+	stop : in std_logic
+) is 
+begin
+	wait until (current_value /= expected_value) or stop='1';
+	check_eq(current_value, expected_value, var_name);
+	nr_total := nr_total + 1;
+end procedure;
 
 impure function check_eq (
 	current_value : std_logic;

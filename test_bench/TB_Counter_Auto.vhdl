@@ -25,13 +25,18 @@ architecture Behavioral of TB_Counter_Auto is
     signal reset   : std_logic := '0';
     -- Outputs
     signal FIN : std_logic;
+
+    -- simulation 
     signal finished : std_logic := '0';
+
+    -- TEST PARAM
     constant period : time := 10 ns; 
+    constant NB_COUNT : integer := 42;
 
 begin
     -- unit under test
     uut: Counter_Auto 
-    GENERIC MAP (20)
+    GENERIC MAP (NB_COUNT)
     PORT MAP (
         CLK_in  => CLK_100MHz,
         reset   => reset,
@@ -47,18 +52,23 @@ begin
     begin
         reset <= '1'; 
         wait for 100 ns;
-        -- counting now 20 times
-        report "wait 20 times";
 
         wait until rising_edge(CLK_100MHz);
-        report "rising edge";
+        report "rising edge : ";
         reset <= '0';
 
+        Checking_loop : for i in 0 to 2 loop
 
-        Checking_loop : for i in 0 to 2 loop        
-            wait for 20* period;
-            if check_eq( FIN, '1', "FIN") then
-                report "check ok";
+            -- Counting
+            for ignore in 0 to NB_COUNT-2 loop -- NB_COUNT-1 time
+                wait for period;
+                check_eq(FIN, '0', "FIN");
+            end loop;
+            wait for period; -- NB_COUNT-th time
+
+            -- End counting
+            if check_eq(FIN, '1', "FIN") then
+                report "check iteration of " & to_string(i) & " ok";
             end if;
         end loop;
 
