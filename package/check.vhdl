@@ -1,8 +1,9 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;               -- for type conversions
-use ieee.math_real.all;                 -- for the ceiling and log constant calculation functions
+use ieee.numeric_std.all;
+use ieee.math_real.all;
 
+use work.conversion_pkg.all;
 
 
 -- declaration
@@ -20,11 +21,11 @@ procedure check_eq (
 	var_name : in String
 );
 
-procedure check_eq (
-	current_value : in integer;
-	expected_value : in integer;
+procedure check_eq_continue (
+	signal current_value : in std_logic;
+	expected_value : in std_logic;
 	var_name : in String;
-	stop : in std_logic
+	duration : in time
 );
 
 impure function check_eq (
@@ -86,16 +87,19 @@ begin
 	nr_total := nr_total + 1;
 end procedure check_eq;
 
-procedure check_eq (
-	current_value : in integer;
-	expected_value : in integer;
+procedure check_eq_continue (
+	signal current_value : in std_logic;
+	expected_value : in std_logic;
 	var_name : in String;
-	stop : in std_logic
-) is 
+	duration : in time
+) is
+variable tmp_time : time := NOW; 
 begin
-	wait until (current_value /= expected_value) or stop='1';
-	check_eq(current_value, expected_value, var_name);
-	nr_total := nr_total + 1;
+	wait until (current_value /= expected_value) for duration;
+	if check_eq(current_value, expected_value, var_name)=false then
+		report "    at " & to_string(NOW - tmp_time) & "/" 
+			& to_string(duration, "ns");
+	end if;
 end procedure;
 
 impure function check_eq (

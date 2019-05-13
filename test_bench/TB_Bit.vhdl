@@ -1,5 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use ieee.math_real.all;
 use work.random_pkg.all;
 use work.check_pkg.all;
 use work.conversion_pkg.all;
@@ -68,7 +70,7 @@ procedure check (
 	signal GO : out std_logic;
 	signal DCC, FIN : in std_logic
 ) is
-
+variable begin_test : time;
 begin
 	---- test 1 ----
 	wait for random(0 ns, 1023 ns);
@@ -91,16 +93,32 @@ begin
 		wait until rising_edge(CLK_1MHz);
 		check_eq(DCC, '1', name);
 	end loop;
+	wait until rising_edge(CLK_100MHz);
 	
-
-
+	wait until FIN = '1' for period; -- 1 cycle of 100MHz
+	if check_eq(FIN, '1', name&" : FIN") = false then
+		report "Check failed for " & name;
+		return;
+	end if;
+	
 	---- test 2 ----
-	-- sync
-	wait until rising_edge(CLK_1MHz);
+	-- no sync, we have FIN = '1';
+	begin_test := NOW;
 	GO <= '1','0' after period;
+	
 	-- LOW
+	check_eq_continue(DCC, '0', name, period * (count-1) * 100);
+	-- report name & " END LOW at " & to_string(NOW - begin_test);
 
-	report "end check";
+	-- HIGH
+	begin_test := NOW;
+	check_eq_continue(DCC, '1', name, period * (count) * 100);
+	-- FIN
+
+	wait until FIN = '1' for period; -- 1 cycle of 100MHz
+	check_eq(FIN, '1', name&" : FIN");
+
+	report name & " end check";
 end check;
 
 
