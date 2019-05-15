@@ -34,18 +34,19 @@ begin
 		if (reset = '1') then
 			r_dcc_frame_v <= '0';
 		elsif (rising_edge(CLK_100MHz)) then
-			if r_dcc_frame_v = '0' then
+			-- invalidate from FSM
+			if inval_reg = '1' and r_dcc_frame_v = '1' then
+				r_dcc_frame_v <= '0';
+			elsif r_dcc_frame_v = '0' then
 				r_dcc_frame <= frame_in;
 				r_dcc_frame_v <= '1';
-
-			elsif COM_REG = '1' then
-				r_dcc_frame <= r_dcc_frame(N_BITS-2 downto 0) & '0';-- sll 1
 			end if;
 
-			-- invalidate from FSM
-			if inval_reg = '1' then
-				r_dcc_frame_v <= '0';
+			if COM_REG = '1' and r_dcc_frame_v = '1' then
+				r_dcc_frame <= '0' & r_dcc_frame(N_BITS-2 downto 0) ;-- slr 1
 			end if;
+
+			
 		end if;
 	end process ;
 
