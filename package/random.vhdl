@@ -19,7 +19,12 @@ procedure seed(s1, s2 : in positive);
 impure function random(min, max : integer) 
 	return integer;
 
+impure function random return std_logic;
+
 impure function random (min, max : integer; size : integer) 
+	return std_logic_vector;
+
+impure function random (size : integer) 
 	return std_logic_vector;
 
 impure function random(min, max : time) 
@@ -72,10 +77,30 @@ begin
 	return integer(trunc(real(max - min + 1) * random)) + min;
 end function;
 
+
+impure function random return std_logic is
+begin
+	if random(0,1) = 0 then
+		return '0';
+	else 
+		return '1';
+	end if;
+end function;
+
 impure function random (min, max : integer; size : integer) 
 return std_logic_vector is
 begin
 	return std_logic_vector ( to_unsigned( random(min,max), size));
+end function;
+
+impure function random (size : integer) 
+return std_logic_vector is
+variable ret : std_logic_vector(size-1 downto 0);
+begin
+	for i in 0 to size-1 loop
+		ret(i) := random;
+	end loop;
+	return ret;
 end function;
 
 impure function random(min, max : time) return time is
