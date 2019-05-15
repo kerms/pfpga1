@@ -7,24 +7,27 @@ entity User_Interface is
 		reset		: in std_logic;
 		boutons		: in std_logic_vector(4 downto 0);
 		switch		: in std_logic_vector(15 downto 0);
-
 		leds		: out std_logic_vector(15 downto 0);
-		command_dcc : out std_logic_vector(31 downto 0);
-		command_dcc_v : out std_logic;
-		command_valid : out std_logic
+
+		-- to reg param
+		wdata		: out std_logic_vector(31 downto 0);
+		wdata_v 	: out std_logic;
+		wdata_addr 	: out std_logic_vector(3 downto 0)
 	);
 
 end User_Interface;
 
 architecture User_Interface_arc of User_Interface is
 
-
 begin
 
+wdata_addr <= "0001" when switch(8) = '1' -- addr
+				else "0000"; -- ctrl
 
-command_valid <= boutons(2);
+wdata <= X"0000" & switch;
+wdata_v <= boutons(2);
 leds <= switch;
-command_dcc(15 downto 0) <= switch;
+
 
 
 end User_Interface_arc;
