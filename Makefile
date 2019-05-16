@@ -15,7 +15,8 @@
 # * Add testbench filename without .vhd or vhdl to EXEC
 # * Then add denpency at USER DEFINE
 # EXEC can have multiple target
-EXEC 	 = TB_Counter_Auto TB_Clock_Divider TB_Bit
+EXEC 	 = TB_Counter_Auto TB_Clock_Divider TB_Bit TB_Reg Simple_TB_User_Interface Simple_TB_Frame_Builder \
+	Simple_TB_Frame_Reg_Param Simple_TB_Frame_Generator
 
 CC   = ghdl
 FLAG = -a -v
@@ -51,6 +52,14 @@ tb : tb.o
 TB_Counter_Auto :  $(SRC_DIR)/Counter_Auto.o
 TB_Clock_Divider : $(SRC_DIR)/Clock_Divider.o
 TB_Bit : $(SRC_DIR)/DCC_Bit.o
+TB_Reg : $(SRC_DIR)/DCC_Reg.o
+Simple_TB_User_Interface : $(SRC_DIR)/User_Interface.o
+Simple_TB_Frame_Builder : $(SRC_DIR)/DCC_Frame_Builder.o
+Simple_TB_Frame_Reg_Param : $(SRC_DIR)/DCC_Frame_Reg_Param.o
+Simple_TB_Frame_Generator : $(SRC_DIR)/DCC_Frame_Reg_Param.o \
+	$(SRC_DIR)/User_Interface.o \
+	$(SRC_DIR)/DCC_Frame_Builder.o \
+	$(SRC_DIR)/DCC_Frame_Generator.o 
 
 # - - - - END DEFINE - - - - - - #
 # - - - - - - - - - - - - - - - -#

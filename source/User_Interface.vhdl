@@ -5,7 +5,7 @@ entity User_Interface is
 	port (
 		CLK_100MHz 	: in std_logic;
 		reset		: in std_logic;
-		boutons		: in std_logic_vector(4 downto 0);
+		buttons		: in std_logic_vector(4 downto 0);
 		switch		: in std_logic_vector(15 downto 0);
 		leds		: out std_logic_vector(15 downto 0);
 
@@ -25,7 +25,7 @@ wdata_addr <= "0001" when switch(8) = '1' -- addr
 				else "0000"; -- ctrl
 
 wdata <= X"0000" & switch;
-wdata_v <= boutons(2);
+wdata_v <= buttons(2);
 leds <= switch;
 
 

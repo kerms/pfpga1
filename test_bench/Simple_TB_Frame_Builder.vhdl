@@ -16,14 +16,13 @@ component frame_builder is
 		N_BIT : integer := 50
 	);
 	port (
-		CLK_100MHz 	: in std_logic;
-		RESET 		: in std_logic;
-		rdata_addr 	: out std_logic_vector(3 downto 0);
-		rdata_v 	: out std_logic;
-		dcc_control	: in std_logic_vector(31 downto 0); -- only for 1st v
+		CLK_100MHz 		: in std_logic;
+		RESET 			: in std_logic;
+		rdata_addr 		: out std_logic_vector(3 downto 0);
+		rdata_v 		: out std_logic;
+		dcc_control		: in std_logic_vector(31 downto 0); -- only for 1st v
 		dcc_control_v 	: in std_logic;
-		dcc_addr : in std_logic_vector(31 downto 0); -- addr in v1
-		dcc_addr_v : in std_logic; -- addr_c in v1,
+		din 			: in std_logic_vector(31 downto 0);
 		dcc_frame_out	: out std_logic_vector(N_BIT-1 downto 0)
 	);
 end component;
@@ -35,8 +34,7 @@ signal rdata_addr : std_logic_vector(3 downto 0);
 signal rdata_v : std_logic;
 signal dcc_control : std_logic_vector(31 downto 0);
 signal dcc_control_v : std_logic;
-signal dcc_addr : std_logic_vector(31 downto 0);
-signal dcc_addr_v : std_logic;
+signal din : std_logic_vector(31 downto 0);
 signal dcc_frame_out : std_logic_vector(N_BIT-1 downto 0);
 
 -- global interface
@@ -53,14 +51,13 @@ begin
 		42
 	)
 	port map (
-		CLK_100MHz		=> CLK_100MHz 	,
-		RESET			=> RESET 		,
-		rdata_addr		=> rdata_addr 	,
-		rdata_v			=> rdata_v 		,
-		dcc_control		=> dcc_control 	,
-		dcc_control_v	=> dcc_control_v,
-		dcc_addr		=> dcc_addr 	,
-		dcc_addr_v		=> dcc_addr_v 	,
+		CLK_100MHz 		=> CLK_100MHz 		,
+		RESET 			=> RESET 			,
+		rdata_addr 		=> rdata_addr 		,
+		rdata_v 		=> rdata_v 			,
+		dcc_control		=> dcc_control		,
+		dcc_control_v 	=> dcc_control_v 	,
+		din 			=> din 				,
 		dcc_frame_out	=> dcc_frame_out
 	);
 
@@ -71,8 +68,7 @@ begin
     stimuli : process
 	begin
 		reset <= '1';
-		dcc_addr <= X"000000" & "10011001";
-		dcc_addr_v <= '1';
+		din <= X"000000" & "10011001";
 		dcc_control <= X"000000" & "10011001";
 		dcc_control_v <= '1';
 		wait for 100 ns;

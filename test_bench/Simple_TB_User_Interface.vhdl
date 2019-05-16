@@ -15,7 +15,7 @@ component user_interface IS
 	port (
 		CLK_100MHz 	: in std_logic;
 		reset		: in std_logic;
-		boutons		: in std_logic_vector(4 downto 0);
+		buttons		: in std_logic_vector(4 downto 0);
 		switch		: in std_logic_vector(15 downto 0);
 		leds		: out std_logic_vector(15 downto 0);
 
@@ -27,7 +27,7 @@ component user_interface IS
 END component;
 
 
-signal boutons		  : std_logic_vector(4 downto 0);
+signal buttons		  : std_logic_vector(4 downto 0);
 signal switch		  : std_logic_vector(15 downto 0);
 signal leds		  : std_logic_vector(15 downto 0);
 signal wdata	: std_logic_vector(31 downto 0);
@@ -47,7 +47,7 @@ begin
 	port map (
 		CLK_100MHz 	  => CLK_100MHz		,
 		reset		  => reset			,
-		boutons		  => boutons		,
+		buttons		  => buttons		,
 		switch		  => switch			,
   		leds		  => leds			,
 		wdata   	  => wdata 			,
@@ -63,17 +63,17 @@ begin
 	begin
 		reset <= '1';
 		switch <= X"0000";
-		boutons <= "00000";
+		buttons <= "00000";
 		wait for 100 ns;
 		reset <= '0';
 
 		switch <= X"001F"; -- write addr
-		boutons <= "00100", "00000" after period;
+		buttons <= "00100", "00000" after period;
 		wait for period * 20;
 
 
 		switch <= X"000F"; -- write command
-		boutons <= "00100", "00000" after period;
+		buttons <= "00100", "00000" after period;
 		wait for period;
 
 		wait for period * 20;
