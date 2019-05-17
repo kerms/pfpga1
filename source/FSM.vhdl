@@ -90,11 +90,11 @@ BEGIN
 			COM_COUNTER <= '0';
 
 		when FSM_TEMPO_GO =>
-			COM_TEMPO <= '1';
+			COM_TEMPO <= '0';
 			inval_reg <= '1';
 
 		when FSM_TEMPO_FIN =>
-			COM_TEMPO <= '0';
+			COM_TEMPO <= '1';
 			inval_reg <= '0';
 
 	end case;
