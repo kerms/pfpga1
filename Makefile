@@ -16,7 +16,7 @@
 # * Then add denpency at USER DEFINE
 # EXEC can have multiple target
 EXEC 	 = TB_Counter_Auto TB_Clock_Divider TB_Bit TB_Reg Simple_TB_User_Interface Simple_TB_Frame_Builder \
-	Simple_TB_Frame_Reg_Param Simple_TB_Frame_Generator
+	Simple_TB_Frame_Reg_Param Simple_TB_Frame_Generator Simple_TB_Tempo Simple_TB_Top
 
 CC   = ghdl
 FLAG = -a -v
@@ -60,6 +60,8 @@ Simple_TB_Frame_Generator : $(SRC_DIR)/DCC_Frame_Reg_Param.o \
 	$(SRC_DIR)/User_Interface.o \
 	$(SRC_DIR)/DCC_Frame_Builder.o \
 	$(SRC_DIR)/DCC_Frame_Generator.o 
+Simple_TB_Tempo : $(SRC_DIR)/DCC_Tempo.o
+Simple_TB_Top : $(SRC_DIR)/DCC_Frame_Builder.o $(SRC_DIR)/Counter_Up.o $(SRC_DIR)/FSM.o $(SRC_DIR)/DCC_Top.o
 
 # - - - - END DEFINE - - - - - - #
 # - - - - - - - - - - - - - - - -#
