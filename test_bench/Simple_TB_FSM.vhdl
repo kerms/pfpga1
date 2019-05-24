@@ -9,7 +9,7 @@ architecture Simple_TB_FSM_arc of Simple_TB_FSM is
 
 component DCC_Reg
 	generic (
-		N_BITS : integer := 50
+		N_BITS : integer
 	);
 	port(
 		-- global definition
@@ -30,6 +30,9 @@ component DCC_Reg
 end component;
 
 component FSM is
+	generic (
+		NB_SHIFT : integer
+	);
 	port (
 		CLK_100MHz 	: in std_logic;
 		reset		: in std_logic;
@@ -84,7 +87,7 @@ signal CLK_1MHz 	: std_logic;
 signal reset 		: std_logic;
 
 -- DCC REG
-signal frame_in		: std_logic_vector(49 downto 0);
+signal frame_in		: std_logic_vector(41 downto 0);
 signal COM_REG	 	: std_logic;
 signal inval_reg	: std_logic;
 signal bit_carry	:  std_logic;
@@ -104,6 +107,7 @@ constant period : time := 10 ns; -- 100 MHz
 
 begin
 	inst_dcc_reg : DCC_Reg
+	GENERIC MAP (42)
 	port map(
 		CLK_100MHz	=> CLK_100MHz	,
 		reset 		=> reset 		,
@@ -145,6 +149,7 @@ begin
 	);
 
 	uut : FSM
+	GENERIC MAP (42)
 	port map (
 		CLK_100MHz  => CLK_100MHz	,
 		reset		=> reset 		,
@@ -178,7 +183,7 @@ begin
 
 		reset <= '0';
 		FIN_TEMPO <= '0';
-		frame_in <= "10101010101010101010101010101010101010101010101010";
+		frame_in <= "101010101010101010101010101010101010101010";
 		wait for period;
 
 		wait for 19990 ns;

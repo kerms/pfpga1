@@ -43,7 +43,7 @@ begin
 			end if;
 
 			if COM_REG = '1' and r_dcc_frame_v = '1' then
-				r_dcc_frame <= '0' & r_dcc_frame(N_BITS-2 downto 0) ;-- slr 1
+				r_dcc_frame <= '0' & r_dcc_frame(N_BITS-1 downto 1) ;-- slr 1
 			end if;
 
 			
@@ -51,7 +51,7 @@ begin
 	end process ;
 
 	-- output the first bit
-	bit_carry <= r_dcc_frame(N_BITS-1);
+	bit_carry <= r_dcc_frame(0) when r_dcc_frame_v = '1' else '0';
 	dcc_frame_v <= r_dcc_frame_v;
 
 end DCC_Reg_arc;

@@ -20,20 +20,24 @@ architecture Behavioral of Counter_Up is
     signal state, next_state : STATE_TYPE;
 
 begin
-    clocked: process (reset, CLK_In, COM_COUNTER) begin
+    clocked: process (reset, CLK_In) begin
         if (reset = '1') then
             counter <= 0;
 
         elsif rising_edge(CLK_In) then
 
             if counter = N-1 then
-                counter <= 0;
+                if COM_COUNTER = '1' then
+                    counter <= 0;
+                    FIN <= '1';
+                else
+                    FIN <= '0';
+                end if;
             elsif COM_COUNTER = '1' then
                 counter <= counter + 1;
+                FIN <= '0';
             end if;
 
         end if;
     end process;
-
-    FIN <= '1' when counter = N-1 else '0';
 end Behavioral;

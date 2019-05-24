@@ -7,8 +7,6 @@ entity DCC_Center is
 		reset		: in std_logic;
 		buttons 	: in std_logic_vector(4 downto 0);
 		switch		: in std_logic_vector(15 downto 0);
-		wdata_addr	: in std_logic_vector(3 downto 0);
-		wdata 		: in std_logic_vector(31 downto 0);
 		leds		: out std_logic_vector(15 downto 0);
 		dcc_out		: out std_logic
 	);
@@ -84,6 +82,9 @@ component dcc_reg is
 end component dcc_reg;
 
 component fsm is
+	generic (
+		NB_SHIFT : integer := 42
+	);
 	port (
 		CLK_100MHz 	: in std_logic;
 		reset		: in std_logic;
@@ -170,6 +171,7 @@ begin
 	);
 
 	inst_fsm : FSM
+	GENERIC MAP (42)
 	port map (
 		CLK_100MHz  => CLK_100MHz	,
 		reset		=> reset 		,
@@ -186,7 +188,7 @@ begin
 	);
 
     inst_tempo: Tempo
-    GENERIC MAP (6000) -- 6ms
+    GENERIC MAP (6000+1) -- 6ms
     PORT MAP (
         CLK_1MHz    => CLK_1MHz ,
         reset       => reset    ,

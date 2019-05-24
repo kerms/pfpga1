@@ -24,11 +24,12 @@ begin
         elsif rising_edge(CLK_In) then
             if (counter = N-1 ) then
                 counter <= 0;
+                FIN <= '1';
             else
                 counter <= counter + 1;
+                FIN <= '0';
             end if;
         end if;
     end process;
 
-    FIN <= '1' when counter = N-1 else '0';
 end Behavioral;

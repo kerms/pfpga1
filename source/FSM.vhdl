@@ -2,6 +2,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity FSM is
+	generic (
+		NB_SHIFT : integer := 42
+	);
 	port (
 		CLK_100MHz 	: in std_logic;
 		reset		: in std_logic;
@@ -50,7 +53,7 @@ signal COM_COUNTER : std_logic;
 begin
 
 inst_counter : Counter_Up
-    GENERIC MAP (50)
+    GENERIC MAP (NB_SHIFT)
     PORT MAP (
         clk_in  => CLK_100MHz,
         reset   => reset_counter,
@@ -115,10 +118,12 @@ begin
 		when FSM_BIT_FIN =>
 			-- check if we had sent all DCC bit
 			-- else next round of DCC bit
-			if end_counter = '1' then
-				next_state <= FSM_TEMPO_GO;
-			elsif (FIN_0 or FIN_1) = '1' then
-				next_state <= FSM_BIT_GO;
+			if (FIN_0 or FIN_1) = '1' then
+				if end_counter = '1' then
+					next_state <= FSM_TEMPO_GO;
+				else
+					next_state <= FSM_BIT_GO;
+				end if;
 			end if;
 
 		when FSM_TEMPO_GO =>
