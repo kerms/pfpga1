@@ -1,13 +1,14 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use work.vector_pkg.all;
 
 entity User_Interface is
 	port (
 		CLK_100MHz 	: in std_logic;
 		reset		: in std_logic;
-		buttons		: in std_logic_vector(4 downto 0);
-		switch		: in std_logic_vector(15 downto 0);
-		leds		: out std_logic_vector(15 downto 0);
+		button		: in std_logic_vector(4 downto 0);
+		switch		: in std_logic_vector(14 downto 0);
+		led		: out std_logic_vector(15 downto 0);
 
 		-- to reg param
 		wdata		: out std_logic_vector(31 downto 0);
@@ -24,9 +25,10 @@ begin
 wdata_addr <= "0001" when switch(8) = '1' -- addr
 				else "0000"; -- ctrl
 
-wdata <= X"0000" & switch;
-wdata_v <= buttons(2);
-leds <= switch;
+wdata <= vector_n_bits( '0', 17) & switch;
+wdata_v <= button(2);
+led(14 downto 0) <= switch;
+led(15) <= reset;
 
 
 

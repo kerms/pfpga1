@@ -88,7 +88,7 @@ BEGIN
 	end case;
 END PROCESS out_put_dec;
 
-next_state_dec : process (state, Go, end_counter) 
+next_state_dec : process (state, Go, end_counter, old_end_counter) 
 begin 
     next_state <= state; -- default value, state not changing
     case(state) is

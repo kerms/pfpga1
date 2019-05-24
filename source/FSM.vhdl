@@ -47,7 +47,6 @@ TYPE STATE_TYPE IS (FSM_IDLE, FSM_BIT_GO, FSM_BIT_FIN, FSM_TEMPO_GO, FSM_TEMPO_F
 signal state : STATE_TYPE;
 signal next_state : STATE_TYPE;
 
-signal reset_counter : std_logic;
 signal end_counter : std_logic;
 signal COM_COUNTER : std_logic;
 begin
@@ -56,7 +55,7 @@ inst_counter : Counter_Up
     GENERIC MAP (NB_SHIFT)
     PORT MAP (
         clk_in  => CLK_100MHz,
-        reset   => reset_counter,
+        reset   => reset,
         COM_COUNTER => COM_COUNTER,
         FIN => end_counter
     );
@@ -77,27 +76,40 @@ BEGIN
 			inval_reg <= '0';
 			COM_TEMPO <= '0';
 			COM_REG <= '0';
+			COM_COUNTER <= '0';
 			GO_1 <= '0';
 			GO_0 <= '0';
 
 		when FSM_BIT_GO =>
+			inval_reg <= '1';
 			GO_1 <= bit_carry;
 			GO_0 <= NOT bit_carry;
+			COM_TEMPO <= '0';
 			COM_REG <= '1';
 			COM_COUNTER <= '1';
 
 		when FSM_BIT_FIN =>
+			inval_reg <= '1';
 			GO_1 <= '0';
 			GO_0 <= '0';
+			COM_TEMPO <= '0';
 			COM_REG <= '0';
 			COM_COUNTER <= '0';
 
 		when FSM_TEMPO_GO =>
+			GO_1 <= '0';
+			GO_0 <= '0';
 			COM_TEMPO <= '0';
+			COM_REG <= '0';
+			COM_COUNTER <= '0';
 			inval_reg <= '1';
 
 		when FSM_TEMPO_FIN =>
+			GO_1 <= '0';
+			GO_0 <= '0';
 			COM_TEMPO <= '1';
+			COM_REG <= '0';
+			COM_COUNTER <= '0';
 			inval_reg <= '0';
 
 	end case;
@@ -106,6 +118,7 @@ END PROCESS out_put_dec;
 next_state_dec : process (state, FIN_0, 
 	FIN_1, end_counter, carry_v, FIN_TEMPO) 
 begin 
+	next_state <= state;
       case (state) is 
 		when FSM_IDLE =>
 			if carry_v = '1' then

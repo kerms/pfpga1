@@ -7,9 +7,9 @@ ENTITY DCC_Frame_Generator IS
 	);
 	PORT(
 		-- User Interface
-		buttons 	: in std_logic_vector(4 downto 0);
-		switch 		: in std_logic_vector(15 downto 0);
-		leds 		: out std_logic_vector(15 downto 0);
+		button	 	: in std_logic_vector(4 downto 0);
+		switch 		: in std_logic_vector(14 downto 0);
+		led	 		: out std_logic_vector(15 downto 0);
 
 		-- Global Interface
 		CLK_100MHz 	: in std_logic;
@@ -26,9 +26,9 @@ component user_interface IS
 	port (
 		CLK_100MHz 	: in std_logic;
 		reset		: in std_logic;
-		buttons		: in std_logic_vector(4 downto 0);
-		switch		: in std_logic_vector(15 downto 0);
-		leds		: out std_logic_vector(15 downto 0);
+		button		: in std_logic_vector(4 downto 0);
+		switch		: in std_logic_vector(14 downto 0);
+		led			: out std_logic_vector(15 downto 0);
 
 		-- to reg param
 		wdata		: out std_logic_vector(31 downto 0);
@@ -90,9 +90,9 @@ begin
 	port map (
 		CLK_100MHz 	  => CLK_100MHz		,
 		reset		  => reset			,
-		buttons		  => buttons		,
+		button		  => button			,
 		switch		  => switch			,
-  		leds		  => leds			,
+  		led			  => led			,
 		wdata   	  => wdata 			,
 		wdata_v 	  => wdata_v		,
 		wdata_addr    => wdata_addr

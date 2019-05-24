@@ -5,9 +5,9 @@ entity DCC_Center is
 	port (
 		CLK_100MHz 	: in std_logic;
 		reset		: in std_logic;
-		buttons 	: in std_logic_vector(4 downto 0);
-		switch		: in std_logic_vector(15 downto 0);
-		leds		: out std_logic_vector(15 downto 0);
+		button	 	: in std_logic_vector(4 downto 0);
+		switch		: in std_logic_vector(14 downto 0);
+		led		: out std_logic_vector(15 downto 0);
 		dcc_out		: out std_logic
 	);
 end entity DCC_Center;
@@ -57,9 +57,9 @@ component DCC_Frame_Generator is
 		NB_FRAME_BITS : integer := 42
 	);
 	PORT(
-		buttons 	: in std_logic_vector(4 downto 0);
-		switch 		: in std_logic_vector(15 downto 0);
-		leds 		: out std_logic_vector(15 downto 0);
+		button	 	: in std_logic_vector(4 downto 0);
+		switch 		: in std_logic_vector(14 downto 0);
+		led 		: out std_logic_vector(15 downto 0);
 		CLK_100MHz 	: in std_logic;
 		reset 		: in std_logic;
 		DCC_Frame 	: out std_logic_vector(NB_FRAME_BITS-1 downto 0)
@@ -148,9 +148,9 @@ begin
 		FRAME_NBITS
 	)
 	port map (
-		buttons 	=> buttons	,
+		button	 	=> button	,
 		switch 		=> switch	,
-		leds 		=> leds		,
+		led 		=> led		,
 		CLK_100MHz 	=> CLK_100MHz,
 		reset 		=> reset	,
 		DCC_Frame 	=> DCC_Frame
