@@ -81,7 +81,7 @@ BEGIN
 			GO_0 <= '0';
 
 		when FSM_BIT_GO =>
-			inval_reg <= '1';
+			inval_reg <= '0';
 			GO_1 <= bit_carry;
 			GO_0 <= NOT bit_carry;
 			COM_TEMPO <= '0';
@@ -89,7 +89,7 @@ BEGIN
 			COM_COUNTER <= '1';
 
 		when FSM_BIT_FIN =>
-			inval_reg <= '1';
+			inval_reg <= '0';
 			GO_1 <= '0';
 			GO_0 <= '0';
 			COM_TEMPO <= '0';
