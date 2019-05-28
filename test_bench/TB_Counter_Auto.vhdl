@@ -54,22 +54,39 @@ begin
         wait for 100 ns;
 
         wait until rising_edge(CLK_100MHz);
-        report "rising edge : ";
+        wait for 42 ns;
         reset <= '0';
 
-        Checking_loop : for i in 0 to 2 loop
+         -- Counting
+        for ignore in 0 to NB_COUNT-1 loop -- NB_COUNT-1 time
+            check_eq(FIN, '0', "FIN " & to_string(ignore));
+            wait for period;
+        end loop;
+
+        -- End counting
+        if check_eq(FIN, '1', "FIN") then
+            report "check iteration of " & to_string(0) & " ok";
+        end if;
+        
+
+        Checking_loop : for i in 0 to 1 loop
+
+            -- from previous count
+            check_eq(FIN, '1', "FIN " & to_string(0));
+            wait for period;
 
             -- Counting
-            for ignore in 0 to NB_COUNT-2 loop -- NB_COUNT-1 time
+            for ignore in 1 to NB_COUNT-1 loop -- NB_COUNT-1 time
+                -- from previous count
+                check_eq(FIN, '0', "FIN " & to_string(ignore));
                 wait for period;
-                check_eq(FIN, '0', "FIN");
             end loop;
-            wait for period; -- NB_COUNT-th time
 
             -- End counting
             if check_eq(FIN, '1', "FIN") then
                 report "check iteration of " & to_string(i) & " ok";
             end if;
+            
         end loop;
 
         finished <= '1';

@@ -15,9 +15,9 @@ component user_interface IS
 	port (
 		CLK_100MHz 	: in std_logic;
 		reset		: in std_logic;
-		buttons		: in std_logic_vector(4 downto 0);
+		button		: in std_logic_vector(4 downto 0);
 		switch		: in std_logic_vector(15 downto 0);
-		leds		: out std_logic_vector(15 downto 0);
+		led		: out std_logic_vector(15 downto 0);
 
 		-- to reg param
 		wdata		: out std_logic_vector(31 downto 0);
@@ -27,9 +27,9 @@ component user_interface IS
 END component;
 
 
-signal buttons		  : std_logic_vector(4 downto 0);
+signal button		  : std_logic_vector(4 downto 0);
 signal switch		  : std_logic_vector(15 downto 0);
-signal leds		  : std_logic_vector(15 downto 0);
+signal led		  : std_logic_vector(15 downto 0);
 signal wdata	: std_logic_vector(31 downto 0);
 signal wdata_v 	: std_logic;
 signal wdata_addr : std_logic_vector(3 downto 0);
@@ -47,9 +47,9 @@ begin
 	port map (
 		CLK_100MHz 	  => CLK_100MHz		,
 		reset		  => reset			,
-		buttons		  => buttons		,
+		button		  => button		,
 		switch		  => switch			,
-  		leds		  => leds			,
+  		led		  => led			,
 		wdata   	  => wdata 			,
 		wdata_v 	  => wdata_v 		,
 		wdata_addr 	  => wdata_addr
@@ -63,17 +63,17 @@ begin
 	begin
 		reset <= '1';
 		switch <= X"0000";
-		buttons <= "00000";
+		button <= "00000";
 		wait for 100 ns;
 		reset <= '0';
 
 		switch <= X"001F"; -- write addr
-		buttons <= "00100", "00000" after period;
+		button <= "00100", "00000" after period;
 		wait for period * 20;
 
 
 		switch <= X"000F"; -- write command
-		buttons <= "00100", "00000" after period;
+		button <= "00100", "00000" after period;
 		wait for period;
 
 		wait for period * 20;

@@ -43,7 +43,7 @@ port (
 );
 END COMPONENT;
 
-TYPE STATE_TYPE IS (FSM_IDLE, FSM_BIT_GO, FSM_BIT_FIN, FSM_TEMPO_GO, FSM_TEMPO_FIN);
+TYPE STATE_TYPE IS (FSM_IDLE, FSM_BIT_GO, FSM_BIT_FIN, FSM_INVAL_REG, FSM_TEMPO_FIN);
 signal state : STATE_TYPE;
 signal next_state : STATE_TYPE;
 
@@ -96,7 +96,7 @@ BEGIN
 			COM_REG <= '0';
 			COM_COUNTER <= '0';
 
-		when FSM_TEMPO_GO =>
+		when FSM_INVAL_REG =>
 			GO_1 <= '0';
 			GO_0 <= '0';
 			COM_TEMPO <= '0';
@@ -133,13 +133,13 @@ begin
 			-- else next round of DCC bit
 			if (FIN_0 or FIN_1) = '1' then
 				if end_counter = '1' then
-					next_state <= FSM_TEMPO_GO;
+					next_state <= FSM_INVAL_REG;
 				else
 					next_state <= FSM_BIT_GO;
 				end if;
 			end if;
 
-		when FSM_TEMPO_GO =>
+		when FSM_INVAL_REG =>
 			next_state <= FSM_TEMPO_FIN;
 
 		when FSM_TEMPO_FIN =>

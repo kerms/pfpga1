@@ -20,6 +20,7 @@ begin
     clocked: process (reset, CLK_In) begin
         if (reset = '1') then
             counter <= 0;
+            FIN <= '0';
 
         elsif rising_edge(CLK_In) then
             if (counter = N-1 ) then

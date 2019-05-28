@@ -17,9 +17,9 @@ component DCC_Frame_Generator IS
 		NB_FRAME_BITS : integer := 42
 	);
 	PORT(
-		buttons : in std_logic_vector(4 downto 0);
+		button : in std_logic_vector(4 downto 0);
 		switch : in std_logic_vector(15 downto 0);
-		leds : out std_logic_vector(15 downto 0);
+		led : out std_logic_vector(15 downto 0);
 		CLK_100MHz : in std_logic;
 		reset : in std_logic;
 		DCC_Frame : out std_logic_vector(NB_FRAME_BITS-1 downto 0)
@@ -28,9 +28,9 @@ END component;
 
 constant NB_FRAME_BITS : integer := 42; 
 
-signal buttons : std_logic_vector(4 downto 0);
+signal button : std_logic_vector(4 downto 0);
 signal switch : std_logic_vector(15 downto 0);
-signal leds : std_logic_vector(15 downto 0);
+signal led : std_logic_vector(15 downto 0);
 signal DCC_Frame : std_logic_vector(NB_FRAME_BITS-1 downto 0);
 
 -- global interface
@@ -51,9 +51,9 @@ begin
 		NB_FRAME_BITS
 	)
 	port map (
-		buttons 	=> buttons	,
+		button 	=> button	,
 		switch 		=> switch	,
-		leds 		=> leds		,
+		led 		=> led		,
 		CLK_100MHz 	=> CLK_100MHz,
 		reset 		=> reset	,
 		DCC_Frame 	=> DCC_Frame
@@ -63,16 +63,16 @@ begin
 	begin
 	  	reset <= '1';
 		switch <= vector_n_bits( '0', 16);
-		buttons <= vector_n_bits( '0', 5);
+		button <= vector_n_bits( '0', 5);
 		wait for 100 ns;
 		reset <= '0';
 
 		switch(8 downto 0) <= "1" & vector_n_bits( '1', 8);
-		buttons <= "00100", "00000" after period;
+		button <= "00100", "00000" after period;
 		wait for 100 ns;
 
 		switch(8 downto 0) <= "0" & "10011001";
-		buttons <= "00100", "00000" after period;
+		button <= "00100", "00000" after period;
 
 		wait for 100 ns;
 		finished <= '1';

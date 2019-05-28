@@ -78,27 +78,27 @@ begin
 	
 	-- LOW
 	report name & " check low";
-	if rising_edge(CLK_1MHz) then 
+	if rising_edge(CLK_1MHz) then
 		wait for period;
 	end if;
 
 	for i in 0 to count-2 loop -- -2 because at edge value is 1;
-		wait until rising_edge(CLK_1MHz);
+		wait for period * 100;
 		check_eq(DCC, '0', name);
 	end loop;
 	
 	-- HIGH
 	report name & " check high";
 	for i in 0 to count-1 loop 	
-		wait until rising_edge(CLK_1MHz);
+		wait for period * 100;
 		check_eq(DCC, '1', name);
 	end loop;
-	wait until rising_edge(CLK_100MHz);
 	
-	wait until FIN = '1' for period; -- 1 cycle of 100MHz
-	if check_eq(FIN, '1', name&" : FIN") = false then
+	wait until FIN = '1' for period * 100; -- 1 cycle of 100MHz
+	if check_eq(FIN, '1', name&" : FIN_1") = false then
 		report "Check failed for " & name;
-		return;
+		wait for 100 ns;
+		--return;
 	end if;
 	
 	---- test 2 ----
@@ -107,7 +107,7 @@ begin
 	GO <= '1','0' after period;
 	
 	-- LOW
-	check_eq_continue(DCC, '0', name, period * (count-1) * 100);
+	check_eq_continue(DCC, '0', name, period * (count) * 100);
 	-- report name & " END LOW at " & to_string(NOW - begin_test);
 
 	-- HIGH
@@ -116,7 +116,7 @@ begin
 	-- FIN
 
 	wait until FIN = '1' for period; -- 1 cycle of 100MHz
-	check_eq(FIN, '1', name&" : FIN");
+	check_eq(FIN, '1', name&" : FIN_2");
 
 	report name & " end check";
 end check;

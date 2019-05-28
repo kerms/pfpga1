@@ -80,6 +80,7 @@ begin
     -- Testing
     test_process : process
     variable copy_reg : std_logic_vector(N_BITS-1 downto 0);
+    variable ran : integer;
     begin
         reset <= '1';
         COM_REG <= '0';
@@ -90,18 +91,19 @@ begin
         for i in 0 to 2 loop
         	copy_reg := random(N_BITS);
         	frame_in <= copy_reg;
-        	inval_reg <= '1', '0' after period * 2;
+        	inval_reg <= '1', '0' after period*2;
         	wait until rising_edge(CLK_100MHz);
         	report to_bstring(frame_in);
         	report to_bstring(copy_reg);
+            wait for period *2 + 42 ns;
 
-
+            /* check if each carry is ok with the copy */
         	for j in 0 to N_BITS-1 loop
         		check_eq(bit_carry, copy_reg(j), "DCC_Reg(" & to_string(j) & ")");
-        		report "value of copy : " & to_string(copy_reg(j));
-        		report "value of carry : " & to_string(bit_carry);
+        		--report "value of copy : " & to_string(copy_reg(j));
+        		--report "value of carry : " & to_string(bit_carry);
         		COM_REG <= '1';--, '0' after period;
-        		wait until rising_edge(CLK_100MHz);
+        		wait for period;
         	end loop;
         	COM_REG <= '0';
         end loop;
